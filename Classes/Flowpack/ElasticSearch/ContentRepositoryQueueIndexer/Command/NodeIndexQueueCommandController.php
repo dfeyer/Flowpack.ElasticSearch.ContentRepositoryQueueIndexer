@@ -12,6 +12,7 @@ use Flowpack\JobQueue\Common\Job\JobManager;
 use Flowpack\JobQueue\Common\Queue\QueueManager;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Cli\CommandController;
+use TYPO3\Flow\Core\Booting\Scripts;
 use TYPO3\Flow\Persistence\PersistenceManagerInterface;
 use TYPO3\Flow\Utility\Files;
 use TYPO3\TYPO3CR\Domain\Repository\WorkspaceRepository;
@@ -28,6 +29,12 @@ class NodeIndexQueueCommandController extends CommandController
 
     const BATCH_QUEUE_NAME = 'Flowpack.ElasticSearch.ContentRepositoryQueueIndexer';
     const LIVE_QUEUE_NAME = 'Flowpack.ElasticSearch.ContentRepositoryQueueIndexer.Live';
+
+    /**
+     * @Flow\InjectConfiguration(package="TYPO3.Flow")
+     * @var array
+     */
+    protected $flowSettings;
 
     /**
      * @var JobManager
@@ -211,7 +218,7 @@ class NodeIndexQueueCommandController extends CommandController
         $this->outputLine('<info>++</info> Indexing %s workspace', [$workspaceName]);
         $nodeCounter = 0;
         $offset = 0;
-        $batchSize = 250;
+        $batchSize = 25;
         while (true) {
             $iterator = $this->nodeDataRepository->findAllBySiteAndWorkspace($workspaceName, $offset, $batchSize);
 
