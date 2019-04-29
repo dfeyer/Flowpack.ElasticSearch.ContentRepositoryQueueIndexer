@@ -42,7 +42,7 @@ class NodeIndexer extends ContentRepositoryAdaptor\Indexer\NodeIndexer
             parent::indexNode($node, $targetWorkspaceName);
             return;
         }
-        $indexingJob = new IndexingJob($this->indexNamePostfix, $targetWorkspaceName, [
+        $indexingJob = new IndexingJob($this->indexNamePostfix, $targetWorkspaceName ?: $node->getContext()->getWorkspaceName(), [
             [
                 'nodeIdentifier' => $this->persistenceManager->getIdentifierByObject($node->getNodeData()),
                 'dimensions' => $node->getDimensions()
